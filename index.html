@@ -46,7 +46,6 @@
 
     <div class="relative z-10 flex flex-col min-h-screen">
 
-        <!-- Header Navigation -->
         <header class="sticky top-0 z-50 border-b border-zinc-900 bg-black/80 backdrop-blur-md">
             <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <a href="#" class="flex items-center gap-3 group">
@@ -73,8 +72,7 @@
                 </div>
             </div>
         </header>
-
-        <!-- Hero Section -->
+        
         <section class="relative pt-20 pb-16 md:pt-28 md:pb-24 px-6 max-w-7xl mx-auto w-full flex flex-col items-center text-center">
             <div class="reveal inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-zinc-800 bg-zinc-950 text-xs font-mono text-zinc-400 mb-8">
                 <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
@@ -101,7 +99,6 @@
             </div>
         </section>
 
-        <!-- Features Grid -->
         <section class="py-16 border-y border-zinc-900 bg-zinc-950/50">
             <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="reveal p-8 border border-zinc-900 bg-black rounded-2xl flex flex-col gap-4">
@@ -129,8 +126,7 @@
                 </div>
             </div>
         </section>
-
-        <!-- Gallery Section -->
+        
         <section id="gallery" class="py-20 px-6 max-w-7xl mx-auto w-full">
             <div class="reveal flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
                 <div>
@@ -144,11 +140,9 @@
                 </div>
             </div>
 
-            <!-- Compact Grid (3 columns) -->
             <div id="templateGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             </div>
 
-            <!-- Pagination Controls -->
             <div id="paginationControls" class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-zinc-900 pt-8 hidden">
                 <div class="text-xs font-mono text-zinc-400">
                     Showing <span id="paginationRange" class="text-white font-bold">0-0</span> of <span id="paginationTotal" class="text-white font-bold">0</span> backgrounds
@@ -158,7 +152,6 @@
             </div>
         </section>
 
-        <!-- OBS Setup Guide -->
         <section id="setup" class="py-24 border-t border-zinc-900 bg-zinc-950/40">
             <div class="max-w-7xl mx-auto px-6">
                 <div class="reveal text-center max-w-2xl mx-auto mb-16">
@@ -188,7 +181,6 @@
             </div>
         </section>
 
-        <!-- Contribute Section -->
         <section id="contribute" class="py-24 px-6 max-w-7xl mx-auto w-full">
             <div class="reveal border border-zinc-800 bg-zinc-950 rounded-3xl p-8 sm:p-14 flex flex-col lg:flex-row items-center justify-between gap-10">
                 <div class="max-w-2xl">
@@ -215,7 +207,6 @@
             </div>
         </section>
 
-        <!-- Footer -->
         <footer class="mt-auto border-t border-zinc-900 bg-black py-10 px-6">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-zinc-400">
                 <div class="flex items-center gap-3">
@@ -231,7 +222,6 @@
 
     </div>
 
-    <!-- Notification Toast -->
     <div id="toast" class="fixed bottom-8 right-8 z-50 bg-white text-black font-mono text-xs font-bold px-5 py-3 rounded-xl border border-zinc-300 shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 flex items-center gap-3 pointer-events-none">
         <i class="fa-solid fa-check text-sm text-emerald-600"></i>
         <span id="toastMsg">URL copied to clipboard!</span>
@@ -295,7 +285,6 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // State Management
         const ITEMS_PER_PAGE = 6;
         let currentPage = 1;
         let allTemplates = [];
@@ -328,7 +317,6 @@
             return `https://jason-devz.github.io/OBS-BACKGROUND/${path}`;
         }
 
-        // Fetching templates directly via GitHub API
         async function discoverTemplates() {
             let files = [];
             try {
@@ -367,7 +355,6 @@
             return files;
         }
 
-        // Freeze iframe CSS animations when not hovered
         function pauseIframeAnimation(iframe) {
             try {
                 const doc = iframe.contentDocument || iframe.contentWindow?.document;
@@ -418,7 +405,6 @@
             templateCountBadge.textContent = `Path: /templates/*.html (${allTemplates.length} templates)`;
             renderPage(1);
 
-            // Asynchronously load actual document titles without blocking initial rendering
             allTemplates.forEach(async (item) => {
                 try {
                     const res = await fetch(item.fetchUrl);
@@ -483,11 +469,7 @@
 
                 const container = card.querySelector('.iframe-container');
                 const iframe = card.querySelector('iframe');
-
-                // Freeze animation when iframe loads
                 iframe.addEventListener('load', () => pauseIframeAnimation(iframe));
-                
-                // Toggle animation on hover
                 container.addEventListener('mouseenter', () => resumeIframeAnimation(iframe));
                 container.addEventListener('mouseleave', () => pauseIframeAnimation(iframe));
 
@@ -511,10 +493,8 @@
 
             paginationRange.textContent = `${startNum}-${endNum}`;
             paginationTotal.textContent = totalItems;
-
             paginationButtons.innerHTML = '';
 
-            // Previous Button
             const prevBtn = document.createElement('button');
             prevBtn.className = `px-3 py-1.5 rounded-lg border text-xs font-mono font-medium transition-all flex items-center gap-1 ${
                 currentPage === 1 
@@ -530,8 +510,7 @@
                 }
             };
             paginationButtons.appendChild(prevBtn);
-
-            // Page Numbers
+            
             for (let i = 1; i <= totalPages; i++) {
                 const pageBtn = document.createElement('button');
                 pageBtn.className = `w-8 h-8 rounded-lg border text-xs font-mono font-bold transition-all flex items-center justify-center ${
@@ -547,7 +526,6 @@
                 paginationButtons.appendChild(pageBtn);
             }
 
-            // Next Button
             const nextBtn = document.createElement('button');
             nextBtn.className = `px-3 py-1.5 rounded-lg border text-xs font-mono font-medium transition-all flex items-center gap-1 ${
                 currentPage === totalPages 
