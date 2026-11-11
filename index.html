@@ -46,6 +46,7 @@
 
     <div class="relative z-10 flex flex-col min-h-screen">
 
+        <!-- Header Navigation -->
         <header class="sticky top-0 z-50 border-b border-zinc-900 bg-black/80 backdrop-blur-md">
             <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <a href="#" class="flex items-center gap-3 group">
@@ -64,7 +65,7 @@
                 <div class="flex items-center gap-3">
                     <a href="https://github.com/Jason-Devz/OBS-BACKGROUND/pulls" target="_blank" class="px-4 py-2 border border-zinc-800 bg-zinc-950 hover:bg-zinc-900 hover:border-zinc-600 rounded-lg text-xs font-mono font-semibold transition-all flex items-center gap-2">
                         <i class="fa-solid fa-code-pull-request text-zinc-400"></i>
-                        <span>Submit Layout</span>
+                        <span class="hidden sm:inline">Submit Layout</span>
                     </a>
                     <a href="https://github.com/Jason-Devz/OBS-BACKGROUND" target="_blank" class="w-10 h-10 border border-zinc-800 bg-zinc-950 hover:bg-white hover:text-black rounded-lg flex items-center justify-center transition-all text-white">
                         <i class="fa-brands fa-github text-lg"></i>
@@ -73,7 +74,8 @@
             </div>
         </header>
 
-        <section class="relative pt-24 pb-20 md:pt-36 md:pb-32 px-6 max-w-7xl mx-auto w-full flex flex-col items-center text-center">
+        <!-- Hero Section -->
+        <section class="relative pt-20 pb-16 md:pt-28 md:pb-24 px-6 max-w-7xl mx-auto w-full flex flex-col items-center text-center">
             <div class="reveal inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-zinc-800 bg-zinc-950 text-xs font-mono text-zinc-400 mb-8">
                 <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                 <span>OPEN SOURCE OBS BROWSER SOURCE LIBRARY</span>
@@ -99,6 +101,7 @@
             </div>
         </section>
 
+        <!-- Features Grid -->
         <section class="py-16 border-y border-zinc-900 bg-zinc-950/50">
             <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="reveal p-8 border border-zinc-900 bg-black rounded-2xl flex flex-col gap-4">
@@ -127,21 +130,35 @@
             </div>
         </section>
 
-        <section id="gallery" class="py-24 px-6 max-w-7xl mx-auto w-full">
-            <div class="reveal flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <!-- Gallery Section -->
+        <section id="gallery" class="py-20 px-6 max-w-7xl mx-auto w-full">
+            <div class="reveal flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
                 <div>
                     <h2 class="text-3xl font-black uppercase tracking-tight mb-2">Available Backgrounds</h2>
-                    <p class="text-zinc-400 text-sm">Select an overlay, copy its direct GitHub URL, and add it into OBS Studio.</p>
+                    <p class="text-zinc-400 text-sm">Survolez un cadre pour animer le template en direct. Copiez l'URL OBS ci-dessous.</p>
                 </div>
-                <div class="text-xs font-mono text-zinc-400 bg-zinc-950 border border-zinc-800 px-3 py-1.5 rounded-lg self-start">
-                    Path: /templates/*.html
+                <div class="flex items-center gap-3">
+                    <span id="templateCountBadge" class="text-xs font-mono text-zinc-400 bg-zinc-950 border border-zinc-800 px-3 py-1.5 rounded-lg self-start">
+                        Path: /templates/*.html
+                    </span>
                 </div>
             </div>
 
-            <div id="templateGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+            <!-- Compact Grid (3 columns) -->
+            <div id="templateGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+
+            <!-- Pagination Controls -->
+            <div id="paginationControls" class="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-zinc-900 pt-8 hidden">
+                <div class="text-xs font-mono text-zinc-400">
+                    Showing <span id="paginationRange" class="text-white font-bold">0-0</span> of <span id="paginationTotal" class="text-white font-bold">0</span> backgrounds
+                </div>
+                <div class="flex items-center gap-2" id="paginationButtons">
+                </div>
             </div>
         </section>
 
+        <!-- OBS Setup Guide -->
         <section id="setup" class="py-24 border-t border-zinc-900 bg-zinc-950/40">
             <div class="max-w-7xl mx-auto px-6">
                 <div class="reveal text-center max-w-2xl mx-auto mb-16">
@@ -171,6 +188,7 @@
             </div>
         </section>
 
+        <!-- Contribute Section -->
         <section id="contribute" class="py-24 px-6 max-w-7xl mx-auto w-full">
             <div class="reveal border border-zinc-800 bg-zinc-950 rounded-3xl p-8 sm:p-14 flex flex-col lg:flex-row items-center justify-between gap-10">
                 <div class="max-w-2xl">
@@ -197,6 +215,7 @@
             </div>
         </section>
 
+        <!-- Footer -->
         <footer class="mt-auto border-t border-zinc-900 bg-black py-10 px-6">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-zinc-400">
                 <div class="flex items-center gap-3">
@@ -212,8 +231,9 @@
 
     </div>
 
-    <div id="toast" class="fixed bottom-8 right-8 z-50 bg-white text-black font-mono text-xs font-bold px-5 py-3 rounded-xl border border-zinc-300 shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 flex items-center gap-3">
-        <i class="fa-solid fa-check text-sm"></i>
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-8 right-8 z-50 bg-white text-black font-mono text-xs font-bold px-5 py-3 rounded-xl border border-zinc-300 shadow-2xl transition-all duration-300 transform translate-y-20 opacity-0 flex items-center gap-3 pointer-events-none">
+        <i class="fa-solid fa-check text-sm text-emerald-600"></i>
         <span id="toastMsg">URL copied to clipboard!</span>
     </div>
 
@@ -275,7 +295,17 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        // State Management
+        const ITEMS_PER_PAGE = 6;
+        let currentPage = 1;
+        let allTemplates = [];
+
         const templateGrid = document.getElementById('templateGrid');
+        const paginationControls = document.getElementById('paginationControls');
+        const paginationButtons = document.getElementById('paginationButtons');
+        const paginationRange = document.getElementById('paginationRange');
+        const paginationTotal = document.getElementById('paginationTotal');
+        const templateCountBadge = document.getElementById('templateCountBadge');
 
         function resolveUrl(path) {
             try {
@@ -298,6 +328,7 @@
             return `https://jason-devz.github.io/OBS-BACKGROUND/${path}`;
         }
 
+        // Fetching templates directly via GitHub API
         async function discoverTemplates() {
             let files = [];
             try {
@@ -336,55 +367,113 @@
             return files;
         }
 
+        // Freeze iframe CSS animations when not hovered
+        function pauseIframeAnimation(iframe) {
+            try {
+                const doc = iframe.contentDocument || iframe.contentWindow?.document;
+                if (doc) {
+                    let style = doc.getElementById('freeze-style');
+                    if (!style) {
+                        style = doc.createElement('style');
+                        style.id = 'freeze-style';
+                        style.innerHTML = `*, *::before, *::after { animation-play-state: paused !important; transition-duration: 0s !important; }`;
+                        doc.head.appendChild(style);
+                    }
+                }
+            } catch (e) {}
+        }
+
+        function resumeIframeAnimation(iframe) {
+            try {
+                const doc = iframe.contentDocument || iframe.contentWindow?.document;
+                if (doc) {
+                    const style = doc.getElementById('freeze-style');
+                    if (style) style.remove();
+                }
+            } catch (e) {}
+        }
+
         async function loadTemplates() {
-            templateGrid.innerHTML = '<div class="col-span-2 text-center py-12 text-zinc-500 font-mono text-xs">Scanning repository /templates directory...</div>';
+            templateGrid.innerHTML = '<div class="col-span-full text-center py-12 text-zinc-500 font-mono text-xs">Scanning repository /templates directory...</div>';
 
             const templateFiles = await discoverTemplates();
-            templateGrid.innerHTML = '';
+            allTemplates = [];
 
             for (let i = 0; i < templateFiles.length; i++) {
                 const path = templateFiles[i];
                 const fetchUrl = resolveUrl(path);
                 const obsCopyUrl = getGitHubIoUrl(path);
                 const filename = path.split('/').pop();
-                
-                let pageTitle = `Template ${filename}`;
-                let iframeSrc = path;
+                let pageTitle = `Template ${filename.replace('.html', '')}`;
 
+                allTemplates.push({
+                    path,
+                    fetchUrl,
+                    obsCopyUrl,
+                    filename,
+                    title: pageTitle
+                });
+            }
+
+            templateCountBadge.textContent = `Path: /templates/*.html (${allTemplates.length} templates)`;
+            renderPage(1);
+
+            // Asynchronously load actual document titles without blocking initial rendering
+            allTemplates.forEach(async (item) => {
                 try {
-                    const response = await fetch(fetchUrl);
-                    if (response.ok) {
-                        const htmlText = await response.text();
+                    const res = await fetch(item.fetchUrl);
+                    if (res.ok) {
+                        const text = await res.text();
                         const parser = new DOMParser();
-                        const doc = parser.parseFromString(htmlText, 'text/html');
-                        pageTitle = doc.querySelector('title')?.innerText || pageTitle;
+                        const doc = parser.parseFromString(text, 'text/html');
+                        const title = doc.querySelector('title')?.innerText;
+                        if (title) {
+                            item.title = title;
+                            const titleElem = document.querySelector(`[data-filename="${item.filename}"]`);
+                            if (titleElem) titleElem.textContent = title;
+                        }
                     }
-                } catch (e) {
-                    console.warn(`Could not parse title for ${path}:`, e);
-                }
+                } catch(e) {}
+            });
+        }
 
+        function renderPage(page) {
+            currentPage = page;
+            const totalItems = allTemplates.length;
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages || 1;
+
+            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalItems);
+            const currentItems = allTemplates.slice(startIndex, endIndex);
+
+            templateGrid.innerHTML = '';
+
+            currentItems.forEach((tpl) => {
                 const card = document.createElement('div');
-                card.className = 'reveal border border-zinc-900 bg-black rounded-2xl overflow-hidden hover:border-zinc-700 transition-all duration-300 flex flex-col';
+                card.className = 'reveal border border-zinc-900 bg-black rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 flex flex-col group';
 
                 card.innerHTML = `
-                    <div class="relative w-full aspect-video bg-zinc-950 overflow-hidden border-b border-zinc-900 group">
-                        <iframe src="${iframeSrc}" class="w-full h-full border-0"></iframe>
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                            <a href="${iframeSrc}" target="_blank" class="px-4 py-2 bg-white text-black text-xs font-mono font-bold rounded-lg shadow-lg hover:bg-zinc-200 transition-colors flex items-center gap-2">
+                    <div class="relative w-full aspect-video bg-zinc-950 overflow-hidden border-b border-zinc-900 iframe-container">
+                        <iframe src="${tpl.fetchUrl}" class="w-full h-full border-0"></iframe>
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                            <a href="${tpl.fetchUrl}" target="_blank" class="pointer-events-auto px-3 py-1.5 bg-white text-black text-xs font-mono font-bold rounded-lg shadow-lg hover:bg-zinc-200 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Fullscreen
                             </a>
                         </div>
                     </div>
-                    <div class="p-6 flex flex-col flex-grow justify-between gap-6">
+                    <div class="p-4 flex flex-col flex-grow justify-between gap-4">
                         <div>
-                            <div class="flex items-center justify-between gap-3 mb-2">
-                                <h3 class="font-bold text-lg text-white">${pageTitle}</h3>
-                                <span class="text-xs font-mono px-2.5 py-1 rounded-md border border-zinc-800 text-zinc-400 bg-zinc-950">${filename}</span>
+                            <div class="flex items-center justify-between gap-2 mb-1.5">
+                                <h3 class="font-bold text-sm text-white truncate" data-filename="${tpl.filename}">${tpl.title}</h3>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded border border-zinc-800 text-zinc-400 bg-zinc-950 shrink-0">${tpl.filename}</span>
                             </div>
-                            <p class="text-zinc-400 text-sm leading-relaxed">Direct HTML5 overlay template for OBS Studio Browser Source.</p>
+                            <p class="text-zinc-400 text-xs leading-relaxed line-clamp-2">Direct HTML5 overlay template for OBS Studio.</p>
                         </div>
-                        <div class="pt-4 border-t border-zinc-900">
-                            <button onclick="copyUrl('${obsCopyUrl}')" class="w-full py-3 px-4 bg-zinc-950 hover:bg-white hover:text-black border border-zinc-800 hover:border-white text-xs font-mono font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 text-white">
+                        <div class="pt-3 border-t border-zinc-900">
+                            <button onclick="copyUrl('${tpl.obsCopyUrl}')" class="w-full py-2.5 px-3 bg-zinc-950 hover:bg-white hover:text-black border border-zinc-800 hover:border-white text-xs font-mono font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2 text-white">
                                 <i class="fa-regular fa-copy"></i>
                                 <span>Copy OBS URL</span>
                             </button>
@@ -392,8 +481,94 @@
                     </div>
                 `;
 
+                const container = card.querySelector('.iframe-container');
+                const iframe = card.querySelector('iframe');
+
+                // Freeze animation when iframe loads
+                iframe.addEventListener('load', () => pauseIframeAnimation(iframe));
+                
+                // Toggle animation on hover
+                container.addEventListener('mouseenter', () => resumeIframeAnimation(iframe));
+                container.addEventListener('mouseleave', () => pauseIframeAnimation(iframe));
+
                 templateGrid.appendChild(card);
                 observer.observe(card);
+            });
+
+            updatePaginationUI(totalItems, totalPages);
+        }
+
+        function updatePaginationUI(totalItems, totalPages) {
+            if (totalItems <= ITEMS_PER_PAGE) {
+                paginationControls.classList.add('hidden');
+                return;
+            }
+
+            paginationControls.classList.remove('hidden');
+
+            const startNum = totalItems === 0 ? 0 : (currentPage - 1) * ITEMS_PER_PAGE + 1;
+            const endNum = Math.min(currentPage * ITEMS_PER_PAGE, totalItems);
+
+            paginationRange.textContent = `${startNum}-${endNum}`;
+            paginationTotal.textContent = totalItems;
+
+            paginationButtons.innerHTML = '';
+
+            // Previous Button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = `px-3 py-1.5 rounded-lg border text-xs font-mono font-medium transition-all flex items-center gap-1 ${
+                currentPage === 1 
+                ? 'border-zinc-900 text-zinc-600 cursor-not-allowed bg-black' 
+                : 'border-zinc-800 text-zinc-300 hover:border-zinc-600 hover:bg-zinc-900 hover:text-white'
+            }`;
+            prevBtn.innerHTML = `<i class="fa-solid fa-chevron-left text-[10px]"></i> Prev`;
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => {
+                if (currentPage > 1) {
+                    renderPage(currentPage - 1);
+                    scrollToGalleryTop();
+                }
+            };
+            paginationButtons.appendChild(prevBtn);
+
+            // Page Numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `w-8 h-8 rounded-lg border text-xs font-mono font-bold transition-all flex items-center justify-center ${
+                    i === currentPage
+                    ? 'border-white bg-white text-black'
+                    : 'border-zinc-800 text-zinc-400 hover:border-zinc-600 hover:bg-zinc-900 hover:text-white'
+                }`;
+                pageBtn.textContent = i;
+                pageBtn.onclick = () => {
+                    renderPage(i);
+                    scrollToGalleryTop();
+                };
+                paginationButtons.appendChild(pageBtn);
+            }
+
+            // Next Button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = `px-3 py-1.5 rounded-lg border text-xs font-mono font-medium transition-all flex items-center gap-1 ${
+                currentPage === totalPages 
+                ? 'border-zinc-900 text-zinc-600 cursor-not-allowed bg-black' 
+                : 'border-zinc-800 text-zinc-300 hover:border-zinc-600 hover:bg-zinc-900 hover:text-white'
+            }`;
+            nextBtn.innerHTML = `Next <i class="fa-solid fa-chevron-right text-[10px]"></i>`;
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => {
+                if (currentPage < totalPages) {
+                    renderPage(currentPage + 1);
+                    scrollToGalleryTop();
+                }
+            };
+            paginationButtons.appendChild(nextBtn);
+        }
+
+        function scrollToGalleryTop() {
+            const galleryElem = document.getElementById('gallery');
+            if (galleryElem) {
+                galleryElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
