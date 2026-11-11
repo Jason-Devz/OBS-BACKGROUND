@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topographic Contour Waves Background</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #topoCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .vignette {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at center, transparent 25%, rgba(0, 0, 0, 0.75) 75%, rgba(0, 0, 0, 0.99) 100%);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="topoCanvas"></canvas>
+    <div class="vignette"></div>
+
+    <script>
+        const canvas = document.getElementById('topoCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let time = 0;
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        function drawTopography() {
+            const numLines = 32;
+            const stepY = (height * 1.2) / numLines;
+            const cols = 100;
+            const stepX = width / cols;
+
+            for (let i = 0; i < numLines; i++) {
+                const baseY = (i - 2) * stepY;
+                const normI = i / numLines;
+
+                ctx.beginPath();
+
+                for (let j = 0; j <= cols; j++) {
+                    const x = j * stepX;
+                    const normX = x / width;
+
+                    const wave1 = Math.sin(normX * 3.5 + time * 0.006 + normI * 2.8) * 45;
+                    const wave2 = Math.cos(normX * 7.0 - time * 0.004 + normI * 4.2) * 25;
+                    const wave3 = Math.sin((normX + normI) * 5.0 + time * 0.003) * 20;
+
+                    const y = baseY + wave1 + wave2 + wave3;
+
+                    if (j === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+
+                const alpha = Math.sin(normI * Math.PI) * 0.42 + 0.05;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                ctx.lineWidth = (i % 5 === 0) ? 1.6 : 0.8;
+
+                if (i % 5 === 0) {
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = 'rgba(255, 255, 255, 0.35)';
+                } else {
+                    ctx.shadowBlur = 0;
+                }
+
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
+
+            time += 1;
+            drawTopography();
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        animate();
+    </script>
+</body>
+</html>
