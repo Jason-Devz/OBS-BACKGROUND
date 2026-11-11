@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Abstract Color Mesh Background</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #staticCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .vignette {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0.99) 100%);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="staticCanvas"></canvas>
+    <div class="vignette"></div>
+
+    <script>
+        const canvas = document.getElementById('staticCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function drawBackground() {
+            const width = canvas.width = window.innerWidth;
+            const height = canvas.height = window.innerHeight;
+
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.globalCompositeOperation = 'screen';
+
+            const minDim = Math.min(width, height);
+            const maxDim = Math.max(width, height);
+
+            const blobs = [
+                { x: width * 0.15, y: height * 0.20, rx: minDim * 0.65, ry: minDim * 0.40, angle: -0.45, color: { r: 139, g: 92, b: 246 }, alpha: 0.45 },
+                { x: width * 0.38, y: height * 0.75, rx: minDim * 0.70, ry: minDim * 0.45, angle: 0.60, color: { r: 236, g: 72, b: 153 }, alpha: 0.35 },
+                { x: width * 0.82, y: height * 0.30, rx: minDim * 0.55, ry: minDim * 0.75, angle: 0.25, color: { r: 59, g: 130, b: 246 }, alpha: 0.48 },
+                { x: width * 0.65, y: height * 0.85, rx: minDim * 0.50, ry: minDim * 0.35, angle: -0.70, color: { r: 16, g: 185, b: 129 }, alpha: 0.38 },
+                { x: width * 0.05, y: height * 0.88, rx: minDim * 0.45, ry: minDim * 0.55, angle: 0.35, color: { r: 6, g: 182, b: 212 }, alpha: 0.40 },
+                { x: width * 0.92, y: height * 0.10, rx: minDim * 0.40, ry: minDim * 0.30, angle: -0.20, color: { r: 245, g: 158, b: 11 }, alpha: 0.25 },
+                { x: width * 0.48, y: height * 0.22, rx: minDim * 0.38, ry: minDim * 0.28, angle: 0.15, color: { r: 99, g: 102, b: 246 }, alpha: 0.30 }
+            ];
+
+            blobs.forEach(b => {
+                ctx.save();
+                ctx.translate(b.x, b.y);
+                ctx.rotate(b.angle);
+
+                const maxR = Math.max(b.rx, b.ry);
+                const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, maxR);
+                grad.addColorStop(0, `rgba(${b.color.r}, ${b.color.g}, ${b.color.b}, ${b.alpha})`);
+                grad.addColorStop(0.3, `rgba(${b.color.r}, ${b.color.g}, ${b.color.b}, ${b.alpha * 0.55})`);
+                grad.addColorStop(0.75, `rgba(${b.color.r}, ${b.color.g}, ${b.color.b}, ${b.alpha * 0.12})`);
+                grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.ellipse(0, 0, b.rx, b.ry, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+
+            ctx.globalCompositeOperation = 'source-over';
+        }
+
+        window.addEventListener('resize', drawBackground);
+        drawBackground();
+    </script>
+</body>
+</html>
