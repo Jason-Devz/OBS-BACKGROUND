@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topographic Vector Waves</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        let step = 0;
+
+        function animate() {
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
+
+            step += 0.003;
+
+            const linesCount = 28;
+            const lineSpacing = height / (linesCount - 4);
+
+            for (let i = 0; i < linesCount; i++) {
+                ctx.beginPath();
+                const baseY = (i - 2) * lineSpacing;
+                
+                ctx.strokeStyle = `rgba(255, 255, 255, ${0.03 + (i / linesCount) * 0.08})`;
+                ctx.lineWidth = 1;
+
+                for (let x = 0; x <= width; x += 15) {
+                    const wave1 = Math.sin(x * 0.002 + step + i * 0.2) * 40;
+                    const wave2 = Math.cos(x * 0.005 - step * 0.8 + i * 0.1) * 25;
+                    const wave3 = Math.sin((x + i * 50) * 0.001 + step * 1.2) * 35;
+
+                    const distFromCenter = Math.abs(x - width / 2) / (width / 2);
+                    const centerFactor = Math.pow(1 - distFromCenter, 2);
+
+                    const y = baseY + (wave1 + wave2 + wave3) * centerFactor;
+
+                    if (x === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+
+                ctx.stroke();
+            }
+
+            const gradient = ctx.createRadialGradient(
+                width / 2, height / 2, width * 0.2,
+                width / 2, height / 2, width * 0.7
+            );
+            gradient.addColorStop(0, 'rgba(0,0,0,0)');
+            gradient.addColorStop(1, 'rgba(0,0,0,0.85)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
