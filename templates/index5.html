@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PS4 Ribbon Waves Background</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #ps4Canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .vignette {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.65) 75%, rgba(0, 0, 0, 0.98) 100%);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="ps4Canvas"></canvas>
+    <div class="vignette"></div>
+
+    <script>
+        const canvas = document.getElementById('ps4Canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let time = 0;
+
+        const particles = [];
+        const particleCount = 45;
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initParticles();
+        }
+
+        function initParticles() {
+            particles.length = 0;
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 2.2 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.2,
+                    vy: -(Math.random() * 0.35 + 0.1),
+                    alpha: Math.random() * 0.6 + 0.2,
+                    pulseSpeed: Math.random() * 0.03 + 0.01
+                });
+            }
+        }
+
+        function drawParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha += Math.sin(time * p.pulseSpeed) * 0.008;
+
+                if (p.y < -10) {
+                    p.y = height + 10;
+                    p.x = Math.random() * width;
+                }
+                if (p.x < -10) p.x = width + 10;
+                if (p.x > width + 10) p.x = -10;
+
+                const currentAlpha = Math.max(0.1, Math.min(0.85, p.alpha));
+
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = '#ffffff';
+                ctx.fillStyle = `rgba(255, 255, 255, ${currentAlpha})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        function drawRibbon(offsetY, amplitudeMult, speedMult, alphaMult, strokeWidth) {
+            ctx.beginPath();
+            ctx.lineWidth = strokeWidth;
+
+            const baseAlpha = 0.25 * alphaMult;
+            const grad = ctx.createLinearGradient(0, 0, width, 0);
+            grad.addColorStop(0, `rgba(255, 255, 255, 0)`);
+            grad.addColorStop(0.2, `rgba(255, 255, 255, ${baseAlpha * 0.7})`);
+            grad.addColorStop(0.5, `rgba(255, 255, 255, ${baseAlpha})`);
+            grad.addColorStop(0.8, `rgba(255, 255, 255, ${baseAlpha * 0.7})`);
+            grad.addColorStop(1, `rgba(255, 255, 255, 0)`);
+
+            ctx.strokeStyle = grad;
+            ctx.shadowBlur = 16;
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.4)';
+
+            const t = time * 0.006 * speedMult;
+            const segments = 120;
+            const step = width / segments;
+
+            for (let i = 0; i <= segments; i++) {
+                const x = i * step;
+                const normX = x / width;
+
+                const y = height * offsetY +
+                    Math.sin(normX * 4 + t) * 70 * amplitudeMult +
+                    Math.sin(normX * 8 - t * 0.7) * 35 * amplitudeMult +
+                    Math.cos(normX * 2 + t * 0.4) * 45 * amplitudeMult;
+
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+        }
+
+        function drawRibbonBand(topOffsetY, bottomOffsetY, speedMult, opacity) {
+            const segments = 80;
+            const step = width / segments;
+            const t = time * 0.005 * speedMult;
+
+            const topPoints = [];
+            const bottomPoints = [];
+
+            for (let i = 0; i <= segments; i++) {
+                const x = i * step;
+                const normX = x / width;
+
+                const yTop = height * topOffsetY +
+                    Math.sin(normX * 3.5 + t) * 85 +
+                    Math.cos(normX * 6 - t * 0.8) * 40;
+
+                const yBottom = height * bottomOffsetY +
+                    Math.sin(normX * 3.5 + t + 0.3) * 90 +
+                    Math.cos(normX * 6 - t * 0.8 + 0.2) * 45;
+
+                topPoints.push({ x, y: yTop });
+                bottomPoints.push({ x, y: yBottom });
+            }
+
+            ctx.beginPath();
+            ctx.moveTo(topPoints[0].x, topPoints[0].y);
+            for (let i = 1; i < topPoints.length; i++) {
+                ctx.lineTo(topPoints[i].x, topPoints[i].y);
+            }
+            for (let i = bottomPoints.length - 1; i >= 0; i--) {
+                ctx.lineTo(bottomPoints[i].x, bottomPoints[i].y);
+            }
+            ctx.closePath();
+
+            const fillGrad = ctx.createLinearGradient(0, 0, width, height);
+            fillGrad.addColorStop(0, `rgba(255, 255, 255, 0)`);
+            fillGrad.addColorStop(0.3, `rgba(255, 255, 255, ${opacity * 0.08})`);
+            fillGrad.addColorStop(0.6, `rgba(255, 255, 255, ${opacity * 0.12})`);
+            fillGrad.addColorStop(1, `rgba(255, 255, 255, 0)`);
+
+            ctx.fillStyle = fillGrad;
+            ctx.fill();
+        }
+
+        function animate() {
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
+
+            time += 1;
+
+            drawRibbonBand(0.42, 0.55, 0.8, 1.0);
+            drawRibbonBand(0.38, 0.48, 1.1, 0.7);
+
+            drawRibbon(0.48, 1.1, 1.0, 1.2, 2.5);
+            drawRibbon(0.45, 0.85, 1.3, 0.9, 1.8);
+            drawRibbon(0.52, 1.3, 0.7, 0.8, 1.5);
+            drawRibbon(0.40, 0.7, 1.5, 0.6, 1.2);
+            drawRibbon(0.56, 1.4, 0.5, 0.5, 1.0);
+
+            drawParticles();
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        animate();
+    </script>
+</body>
+</html>
